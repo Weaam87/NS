@@ -12,6 +12,9 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import com.example.ns.R
 import com.example.ns.navigation.FragmentsNavigation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class LoginFragment : Fragment() {
@@ -19,6 +22,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var username: EditText
     private lateinit var password: EditText
+    private lateinit var fAuth : FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +33,7 @@ class LoginFragment : Fragment() {
 
         username = view.findViewById(R.id.username)
         password = view.findViewById(R.id.password)
+        fAuth = Firebase.auth
 
         view.findViewById<Button>(R.id.register).setOnClickListener {
             val navRegister = activity as FragmentsNavigation
@@ -60,11 +65,24 @@ class LoginFragment : Fragment() {
                         Regex("[a-zA-Z0-9._-]+@[a-z]+\\.[a-z]+")
                     )
                 ) {
-                    Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT)
-                        .show()
+                    firebaseSignIn()
                 } else {
                     username.setError("Please Enter valid Email", icon)
                 }
+            }
+        }
+    }
+
+    private fun firebaseSignIn() {
+        fAuth.signInWithEmailAndPassword(
+            username.text.toString(), password.text.toString()).addOnCompleteListener {
+                task ->
+            if (task.isSuccessful) {
+                val navHome = activity as FragmentsNavigation
+                navHome.navigateFragment(HomeFragment(), true)
+                Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, task.exception?.message, Toast.LENGTH_LONG).show()
             }
         }
     }

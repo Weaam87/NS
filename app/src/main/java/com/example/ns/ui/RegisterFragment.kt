@@ -1,5 +1,6 @@
 package com.example.ns.ui
 
+import android.app.ProgressDialog.show
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -11,12 +12,17 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import com.example.ns.R
+import com.example.ns.navigation.FragmentsNavigation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class RegisterFragment : Fragment() {
 
     private lateinit var username: EditText
     private lateinit var password: EditText
     private lateinit var confPassword: EditText
+    private lateinit var fAuth : FirebaseAuth
 
 
     override fun onCreateView(
@@ -29,6 +35,8 @@ class RegisterFragment : Fragment() {
         username = view.findViewById(R.id.username_reg)
         password = view.findViewById(R.id.password_reg)
         confPassword = view.findViewById(R.id.confirm_password)
+        fAuth = Firebase.auth
+
         view.findViewById<Button>(R.id.register_reg).setOnClickListener {
             validateEmptyForm()
         }
@@ -60,19 +68,32 @@ class RegisterFragment : Fragment() {
                         Regex("[a-zA-Z0-9._-]+@[a-z]+\\.[a-z]+")
                     )
                 ) {
-                    if (password.text.toString().length >= 5) {
+                    if (password.text.toString().length >= 6) {
                         if (password.text.toString() == confPassword.text.toString()) {
-                            Toast.makeText(context, "Register Successful", Toast.LENGTH_SHORT)
-                                .show()
+                            firebaseSignUp()
                         } else {
                             confPassword.setError("Password Did Not Match", icon)
                         }
                     } else {
-                        password.setError("Please Enter at least 5 characters or numbers", icon)
+                        password.setError("Please Enter at least 6 characters or numbers", icon)
                     }
                 } else {
                     username.setError("Please Enter valid Email", icon)
                 }
+            }
+        }
+    }
+
+    private fun firebaseSignUp() {
+        fAuth.createUserWithEmailAndPassword(
+            username.text.toString(), password.text.toString()
+        ).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val navHome = activity as FragmentsNavigation
+                navHome.navigateFragment(HomeFragment(), true)
+                Toast.makeText(context, "Register Successful", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, task.exception?.message, Toast.LENGTH_LONG).show()
             }
         }
     }
