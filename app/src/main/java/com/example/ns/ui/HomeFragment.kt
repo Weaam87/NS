@@ -43,6 +43,7 @@ class HomeFragment : Fragment() {
                 }
                 R.id.location -> {
                     // Respond to location click
+                    findNavController().navigate(R.id.action_homeFragment_to_locationFragment)
                     true
                 }
                 else -> false

@@ -38,5 +38,13 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="com.example.ns.ui.LocationFragment"
+        android:label="Current Location"
+        tools:layout="@layout/fragment_location" />
 </navigation>
