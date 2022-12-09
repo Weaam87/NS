@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.HomeFragment">
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_menu" />
 
     <ImageView
         android:id="@+id/img_log_out"
@@ -15,7 +22,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/log_out"
         android:src="@drawable/logout"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent" />
 
 
