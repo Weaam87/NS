@@ -10,8 +10,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.navigation.fragment.findNavController
 import com.example.ns.R
-import com.example.ns.navigation.FragmentsNavigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -36,8 +36,7 @@ class LoginFragment : Fragment() {
         fAuth = Firebase.auth
 
         view.findViewById<Button>(R.id.register).setOnClickListener {
-            val navRegister = activity as FragmentsNavigation
-            navRegister.navigateFragment(RegisterFragment(), true)
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
         view.findViewById<Button>(R.id.login_btn).setOnClickListener {
@@ -78,8 +77,7 @@ class LoginFragment : Fragment() {
             username.text.toString(), password.text.toString()).addOnCompleteListener {
                 task ->
             if (task.isSuccessful) {
-                val navHome = activity as FragmentsNavigation
-                navHome.navigateFragment(HomeFragment(), true)
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, task.exception?.message, Toast.LENGTH_LONG).show()

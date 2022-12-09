@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.example.ns.R
-import com.example.ns.navigation.FragmentsNavigation
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -22,8 +22,7 @@ class HomeFragment : Fragment() {
 
         view.findViewById<Button>(R.id.btn_log_out).setOnClickListener {
             Firebase.auth.signOut()
-            val navLogin = activity as FragmentsNavigation
-            navLogin.navigateFragment(LoginFragment(),false)
+            findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
         }
         return view
     }

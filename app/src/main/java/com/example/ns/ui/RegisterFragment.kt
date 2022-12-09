@@ -1,6 +1,6 @@
 package com.example.ns.ui
 
-import android.app.ProgressDialog.show
+
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -11,8 +11,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.navigation.fragment.findNavController
 import com.example.ns.R
-import com.example.ns.navigation.FragmentsNavigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -89,8 +89,7 @@ class RegisterFragment : Fragment() {
             username.text.toString(), password.text.toString()
         ).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val navHome = activity as FragmentsNavigation
-                navHome.navigateFragment(HomeFragment(), true)
+                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
                 Toast.makeText(context, "Register Successful", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, task.exception?.message, Toast.LENGTH_LONG).show()
