@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.MotionEvent
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     // Declaring handler, runnable and time in milli seconds
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
-    private var mTime: Long = 2000
+    private var mTime: Long = 5000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +45,10 @@ class MainActivity : AppCompatActivity() {
         mHandler = Handler(Looper.getMainLooper())
         mRunnable = Runnable {
             if (currentUser != null) {
+                Toast.makeText(applicationContext, "Auto sign out ", Toast.LENGTH_SHORT)
+                    .show()
                 fAuth.signOut()
                 navController.navigate(R.id.action_homeFragment_to_loginFragment)
-
             }
         }
 

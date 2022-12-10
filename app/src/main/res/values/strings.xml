@@ -9,7 +9,11 @@
     <string name="confirm_password">Confirm password</string>
     <string name="log_out">Log Out</string>
     <string name="support">Support</string>
+    <string name="notice">Notice : for faster testing purpose , I added a code to make auto sign out after only 5 seconds in case the user is inactive .</string>
     <string name="settings">Settings</string>
+    <string name="sign_out">Are you sure you want to sign out ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="current_location">Location</string>
     <string name="home">Home</string>
     <string name="latitude">Latitude:</string>
