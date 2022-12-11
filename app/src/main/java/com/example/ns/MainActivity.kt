@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     // Declaring handler, runnable and time in milli seconds
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
-    private var mTime: Long = 5000
+    private var mTime: Long = 3000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
