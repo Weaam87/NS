@@ -67,7 +67,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="Login">
+            android:label="@string/nsbot">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
