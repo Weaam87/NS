@@ -17,9 +17,12 @@
     <string name="current_location">Location</string>
     <string name="home">Home</string>
     <string name="latitude">Latitude:</string>
+    <string name="can_not_undo">WARNING ! \nThis action can not be undo</string>
+    <string name="delete_account_confirmation">Delete your account ?</string>
     <string name="longitude">Longitude:</string>
     <string name="change_password">Change Password</string>
     <string name="current_password">Current Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_change">Confirm Change</string>
+    <string name="delete_account">Delete Account</string>
 </resources>

@@ -42,6 +42,9 @@ class HomeActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.home -> {
                     // Respond to home click
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
                     Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
                     true
                 }
@@ -92,18 +95,10 @@ class HomeActivity : AppCompatActivity() {
 
         //sign out
         findViewById<ImageView>(R.id.img_log_out_a).setOnClickListener {
-            //confirmation before sign out
-            MaterialAlertDialogBuilder(this)
-                .setMessage(getString(R.string.sign_out))
-                .setCancelable(true)
-                .setNegativeButton(getString(R.string.no)) { _, _ -> }
-                .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP)
-                    startActivity(intent)
-                    Firebase.auth.signOut()
-                    //    findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
-                }.show()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            Firebase.auth.signOut()
         }
     }
 

@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.ns.MainActivity
 import com.example.ns.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 
@@ -21,6 +22,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
         val changePasswordBtn: Button = findViewById(R.id.btn_change_password)
         val currentPasswordTextInputLayout: View =
             findViewById(R.id.current_password_textInputLayout)
@@ -31,6 +33,7 @@ class SettingsActivity : AppCompatActivity() {
             findViewById(R.id.confirm_password_textInputLayout_setting)
         val confirmPasswordEditText: EditText = findViewById(R.id.confirm_password_setting)
         val confirmChangeBtn: Button = findViewById(R.id.btn_confirm_change)
+        val deleteAccountBtn : Button = findViewById(R.id.btn_delete_account)
 
         currentPasswordTextInputLayout.visibility = View.GONE
         newPasswordTextInputLayout.visibility = View.GONE
@@ -53,7 +56,6 @@ class SettingsActivity : AppCompatActivity() {
 
                 if (newPasswordEditText.text.toString() == confirmPasswordEditText.text.toString()) {
 
-                    val user = auth.currentUser
                     if (user != null && user.email != null) {
                         val credential = EmailAuthProvider
                             .getCredential(user.email!!, currentPasswordEditText.text.toString())
@@ -62,7 +64,8 @@ class SettingsActivity : AppCompatActivity() {
                         user.reauthenticate(credential)
                             .addOnCompleteListener {
                                 if (it.isSuccessful) {
-                                    Toast.makeText(this, "Re-Authentication success.",Toast.LENGTH_SHORT
+                                    Toast.makeText(
+                                        this, "Re-Authentication success.", Toast.LENGTH_SHORT
                                     ).show()
                                     user.updatePassword(newPasswordEditText.text.toString())
                                         .addOnCompleteListener { task ->
@@ -81,15 +84,12 @@ class SettingsActivity : AppCompatActivity() {
                                         }
 
                                 } else {
-                                    Toast.makeText(this,"Re-Authentication failed.",Toast.LENGTH_SHORT
+                                    Toast.makeText(
+                                        this, "Re-Authentication failed.", Toast.LENGTH_SHORT
                                     ).show()
                                 }
                             }
-                    } else {
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
                     }
-
                 } else {
                     Toast.makeText(this, "Password mismatching.", Toast.LENGTH_SHORT).show()
                 }
@@ -102,6 +102,28 @@ class SettingsActivity : AppCompatActivity() {
 
         confirmChangeBtn.setOnClickListener {
             changePassword()
+        }
+
+        fun deleteAccount() {
+            user?.delete()?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                    Toast.makeText(this, "Your account has been deleted", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        deleteAccountBtn.setOnClickListener {
+            //confirmation before delete account
+            MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.delete_account_confirmation))
+                .setMessage(getString(R.string.can_not_undo))
+                .setCancelable(true)
+                .setNegativeButton(getString(R.string.no)) { _, _ -> }
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    deleteAccount()
+                }.show()
         }
     }
 
