@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.LocationFragment">
+    tools:context=".ui.LocationActivity">
 
     <TextView
         android:id="@+id/latTextView"

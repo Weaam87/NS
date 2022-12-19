@@ -1,91 +1,91 @@
 package com.example.ns
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.MotionEvent
+import android.text.TextUtils
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.appcompat.content.res.AppCompatResources
+import com.example.ns.ui.HomeActivity
+import com.example.ns.ui.RegisterActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var navController: NavController
+    private lateinit var username: EditText
+    private lateinit var password: EditText
     private lateinit var fAuth: FirebaseAuth
 
-    // Declaring handler, runnable and time in milli seconds
-    private lateinit var mHandler: Handler
-    private lateinit var mRunnable: Runnable
-    private var mTime: Long = 3000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         fAuth = Firebase.auth
-
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
         val currentUser = fAuth.currentUser
+
+        username = findViewById(R.id.username)
+        password = findViewById(R.id.password)
+        fAuth = Firebase.auth
+
+        findViewById<Button>(R.id.register).setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<Button>(R.id.login_btn).setOnClickListener {
+            validateForm()
+        }
+
         // Open home screen directly if the user already logged in
         if (currentUser != null) {
-            navController.navigate(R.id.homeFragment)
-        } else {
-            // launch the login fragment
-            navController.navigate(R.id.loginFragment)
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
         }
+    }
 
-        // Initializing the handler and the runnable
-        mHandler = Handler(Looper.getMainLooper())
-        mRunnable = Runnable {
-            if (currentUser != null) {
-                Toast.makeText(applicationContext, "Auto sign out ", Toast.LENGTH_SHORT)
-                    .show()
-                fAuth.signOut()
-                navController.navigate(R.id.action_homeFragment_to_loginFragment)
+    // Check the entries validations
+    private fun validateForm() {
+        val icon = AppCompatResources.getDrawable(this, R.drawable.warning)
+        icon?.setBounds(0, 0, icon.intrinsicWidth, icon.intrinsicHeight)
+
+        when {
+            TextUtils.isEmpty(username.text.toString().trim()) -> {
+                username.setError("Please Enter Username", icon)
+            }
+
+            TextUtils.isEmpty(password.text.toString().trim()) -> {
+                password.setError("Please Enter Password", icon)
+            }
+
+            username.text.toString().isNotEmpty() && password.text.toString().isNotEmpty() -> {
+                if (username.text.toString().matches(
+                        Regex("[a-zA-Z0-9._-]+@[a-z]+\\.[a-z]+")
+                    )
+                ) {
+                    firebaseSignIn()
+                } else {
+                    username.setError("Please Enter valid Email", icon)
+                }
             }
         }
-
-        //Start the handler
-        startHandler()
-
-
-        //This ensures action bar (app bar) buttons, like the menu option are visible.
-        setupActionBarWithNavController(navController)
     }
 
-    // When the screen is touched or motion is detected
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-
-        // Removes the handler callbacks (if any)
-        stopHandler()
-
-        // Runs the handler (for the specified time)
-        // If any touch or motion is detected before
-        // the specified time, this override function is again called
-        startHandler()
-
-        return super.onTouchEvent(event)
+    private fun firebaseSignIn() {
+        fAuth.signInWithEmailAndPassword(
+            username.text.toString(), password.text.toString()
+        ).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
-    // start handler function
-    private fun startHandler() {
-        mHandler.postDelayed(mRunnable, mTime)
-    }
-
-    // stop handler function
-    private fun stopHandler() {
-        mHandler.removeCallbacks(mRunnable)
-    }
-
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
-    }
 }

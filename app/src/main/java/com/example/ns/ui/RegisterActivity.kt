@@ -1,52 +1,42 @@
 package com.example.ns.ui
 
-
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.navigation.fragment.findNavController
 import com.example.ns.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class RegisterFragment : Fragment() {
+class RegisterActivity : AppCompatActivity() {
 
     private lateinit var username: EditText
     private lateinit var password: EditText
     private lateinit var confPassword: EditText
-    private lateinit var fAuth : FirebaseAuth
+    private lateinit var fAuth: FirebaseAuth
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_register)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_register, container, false)
-
-        username = view.findViewById(R.id.username_reg)
-        password = view.findViewById(R.id.password_reg)
-        confPassword = view.findViewById(R.id.confirm_password)
+        username = findViewById(R.id.username_reg)
+        password = findViewById(R.id.password_reg)
+        confPassword = findViewById(R.id.confirm_password)
         fAuth = Firebase.auth
 
-        view.findViewById<Button>(R.id.register_reg).setOnClickListener {
+        findViewById<Button>(R.id.register_reg).setOnClickListener {
             validateEmptyForm()
         }
-        return view
     }
-
 
     // Check the entries validations
     private fun validateEmptyForm() {
-        val icon = AppCompatResources.getDrawable(requireContext(), R.drawable.warning)
+        val icon = AppCompatResources.getDrawable(this, R.drawable.warning)
         icon?.setBounds(0, 0, icon.intrinsicWidth, icon.intrinsicHeight)
 
         when {
@@ -89,10 +79,11 @@ class RegisterFragment : Fragment() {
             username.text.toString(), password.text.toString()
         ).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-                Toast.makeText(context, "Register Successful", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                Toast.makeText(this, "Register Successful", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(context, task.exception?.message, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
             }
         }
     }
