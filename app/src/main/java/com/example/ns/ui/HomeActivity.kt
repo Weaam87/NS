@@ -66,7 +66,8 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.settings -> {
                     // Respond to settings click
-                    Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.location -> {
@@ -133,5 +134,10 @@ class HomeActivity : AppCompatActivity() {
     override fun onStop() {
         stopHandler()
         super.onStop()
+    }
+
+    override fun onResume() {
+        startHandler()
+        super.onResume()
     }
 }
