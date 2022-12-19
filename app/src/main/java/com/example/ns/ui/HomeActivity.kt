@@ -27,7 +27,7 @@ class HomeActivity : AppCompatActivity() {
     // Declaring handler, runnable and time in milli seconds
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
-    private var mTime: Long = 10000
+    private var mTime: Long = 3000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,5 +128,10 @@ class HomeActivity : AppCompatActivity() {
     // stop handler function
     private fun stopHandler() {
         mHandler.removeCallbacks(mRunnable)
+    }
+
+    override fun onStop() {
+        stopHandler()
+        super.onStop()
     }
 }
