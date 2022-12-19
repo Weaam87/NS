@@ -17,6 +17,7 @@
     <string name="current_location">Location</string>
     <string name="home">Home</string>
     <string name="latitude">Latitude:</string>
+    <string name="change_mode">Change Mode</string>
     <string name="can_not_undo">WARNING ! \nThis action can not be undo</string>
     <string name="delete_account_confirmation">Delete your account ?</string>
     <string name="longitude">Longitude:</string>

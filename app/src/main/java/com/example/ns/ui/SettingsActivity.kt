@@ -1,12 +1,15 @@
 package com.example.ns.ui
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.ns.MainActivity
 import com.example.ns.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -34,6 +37,7 @@ class SettingsActivity : AppCompatActivity() {
         val confirmPasswordEditText: EditText = findViewById(R.id.confirm_password_setting)
         val confirmChangeBtn: Button = findViewById(R.id.btn_confirm_change)
         val deleteAccountBtn : Button = findViewById(R.id.btn_delete_account)
+        val changeMode : CheckBox = findViewById(R.id.change_mode)
 
         currentPasswordTextInputLayout.visibility = View.GONE
         newPasswordTextInputLayout.visibility = View.GONE
@@ -124,6 +128,28 @@ class SettingsActivity : AppCompatActivity() {
                 .setPositiveButton(getString(R.string.yes)) { _, _ ->
                     deleteAccount()
                 }.show()
+        }
+
+        // change Mode
+        changeMode.setOnClickListener {
+            if (isUsingNightMode()) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+
+        }
+
+    }
+
+    //check whether the user is using dark mode or not
+    private fun isUsingNightMode(): Boolean {
+        return when (resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            Configuration.UI_MODE_NIGHT_NO -> false
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> false
+            else -> false
         }
     }
 
