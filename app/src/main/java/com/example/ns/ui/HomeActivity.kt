@@ -2,19 +2,19 @@ package com.example.ns.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.content.Intent.*
+import android.content.Intent.ACTION_VIEW
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.MotionEvent
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.ns.MainActivity
 import com.example.ns.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

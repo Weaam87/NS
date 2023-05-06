@@ -1,7 +1,7 @@
-# In this app , I tried to show my skills in the following subjects :
+# In this app, I have demonstrated my skills in the following areas:
 
-1. Create login & register screens using Firebase.
-2. Edit / delete the user's account.
-3. Get the user's location.
-4. Auto sign out if the user is inactive.
-5. Explicit & Implicit Intent.
+1. Implementing Firebase authentication to create login and registration screens.
+2. Enabling users to edit or delete their accounts.
+3. Retrieving user location using location services.
+4. Implementing automatic sign-out for inactive users.
+5. Utilizing both explicit and implicit intents to navigate between activities and interact with other apps.
